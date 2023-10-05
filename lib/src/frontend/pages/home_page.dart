@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:simulador_parcelamento_pdf/src/pages/result_pdf_page.dart';
+import 'package:simulador_parcelamento_pdf/src/frontend/pages/result_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -16,21 +16,29 @@ class _HomePageState extends State<HomePage> {
 
   String? validateCurrency(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Please enter some text';
+      return 'Entre com um valor';
     }
     if (!currencyRegex.hasMatch(value)) {
-      return 'Please enter a valid Brazilian currency amount (R\$ X.XX or R\$ X,XXX.XX)';
+      return 'Entre com um valor numérico';
     }
     return null;
   }
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController _controller = TextEditingController();
+    String logo = 'logo';
+    final TextEditingController controller = TextEditingController();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: const Text('Simulador de parcelamento'),
+        leading: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Hero(
+            tag: logo,
+            child: Image.asset('assets/images/logo-escritorio-min.png'),
+          ),
+        ),
       ),
       body: Center(
         child: Column(
@@ -44,7 +52,7 @@ class _HomePageState extends State<HomePage> {
                   SizedBox(
                     width: 200,
                     child: TextFormField(
-                      controller: _controller,
+                      controller: controller,
                       keyboardType: TextInputType.number,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
@@ -59,16 +67,17 @@ class _HomePageState extends State<HomePage> {
                           _formKey.currentState!.save();
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) => ResultPDFPage(
+                              builder: (context) => ResultPage(
                                 valorInserido: double.parse(valorInserido!),
                               ),
                             ),
                           );
-                          _controller.clear();
+                          controller.clear();
                         }
                       },
                     ),
                   ),
+                  const SizedBox(height: 40),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     child: ElevatedButton(
@@ -77,11 +86,11 @@ class _HomePageState extends State<HomePage> {
                           _formKey.currentState!.save();
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) => ResultPDFPage(
+                              builder: (context) => ResultPage(
                                   valorInserido: double.parse(valorInserido!)),
                             ),
                           );
-                          _controller.clear();
+                          controller.clear();
                         }
                       },
                       child: const Text('Simular Parcelamento'),

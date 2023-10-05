@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:simulador_parcelamento_pdf/src/services/calculadora_parcelas.dart';
-import 'package:simulador_parcelamento_pdf/src/services/formatar_moeda.dart';
+import 'package:simulador_parcelamento_pdf/src/frontend/pages/pdf_generate_page.dart';
+import 'package:simulador_parcelamento_pdf/src/frontend/services/calculadora_parcelas.dart';
+import 'package:simulador_parcelamento_pdf/src/frontend/services/formatar_moeda.dart';
 
-List<String> list = <String>['1', '2', '3', '4.3'];
+List<double> list = <double>[1.0, 2.1, 3.1, 4.3];
 
-class ResultPDFPage extends StatefulWidget {
+class ResultPage extends StatefulWidget {
   final double valorInserido;
 
-  const ResultPDFPage({Key? key, required this.valorInserido})
-      : super(key: key);
+  const ResultPage({Key? key, required this.valorInserido}) : super(key: key);
 
   @override
-  State<ResultPDFPage> createState() => _ResultPDFPageState();
+  State<ResultPage> createState() => _ResultPageState();
 }
 
-class _ResultPDFPageState extends State<ResultPDFPage> {
+class _ResultPageState extends State<ResultPage> {
   List<Map<String, dynamic>> gridData = [];
   double taxaRetorno = 1.0;
 
@@ -27,8 +27,6 @@ class _ResultPDFPageState extends State<ResultPDFPage> {
 
   @override
   Widget build(BuildContext context) {
-    String dropdownValue = taxaRetorno.toString();
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Resultados'),
@@ -39,14 +37,13 @@ class _ResultPDFPageState extends State<ResultPDFPage> {
           children: <Widget>[
             const SizedBox(height: 20),
             Text(
-                'Valor Digitado: ${FormatarMoeda.formatarMoeda(
-                    widget.valorInserido)}'),
+                'Valor Digitado: ${FormatarMoeda.formatarMoeda(widget.valorInserido)}'),
             const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                DropdownButton<String>(
-                  value: dropdownValue,
+                DropdownButton<double>(
+                  value: taxaRetorno,
                   icon: const Icon(Icons.arrow_downward),
                   elevation: 16,
                   style: const TextStyle(color: Colors.deepPurple),
@@ -54,18 +51,19 @@ class _ResultPDFPageState extends State<ResultPDFPage> {
                     height: 2,
                     color: Colors.deepPurpleAccent,
                   ),
-                  onChanged: (String? value) {
+                  onChanged: (double? value) {
                     setState(() {
-                      dropdownValue = value!;
-                      taxaRetorno = double.parse(value);
+                      taxaRetorno = value!;
                       gridData = CalculadoraParcelas.calcularParcelas(
                           widget.valorInserido, taxaRetorno);
                     });
                   },
-                  items: list.map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
+                  items: list.map<DropdownMenuItem<double>>((double value) {
+                    return DropdownMenuItem<double>(
                       value: value,
-                      child: Text('Retorno ${value}'),
+                      child: value == 1
+                          ? Text('Retorno %')
+                          : Text('Retorno ${value.toInt()}%'),
                     );
                   }).toList(),
                 ),
@@ -73,14 +71,25 @@ class _ResultPDFPageState extends State<ResultPDFPage> {
                   width: 40,
                 ),
                 ElevatedButton(
-                  onPressed: () {},
+                  autofocus: true,
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => PdfGeneratePage(
+                          gridData: gridData,
+                          totalValue:
+                              'Valor dos débitos: ${FormatarMoeda.formatarMoeda(widget.valorInserido)}',
+                        ),
+                      ),
+                    );
+                  },
                   child: const Text('Gerar PDF'),
                 )
               ],
             ),
             const SizedBox(height: 20),
             SingleChildScrollView(
-              scrollDirection: Axis.vertical,
+              scrollDirection: Axis.horizontal,
               child: DataTable(
                 columns: const [
                   DataColumn(label: Text('Modalidade')),

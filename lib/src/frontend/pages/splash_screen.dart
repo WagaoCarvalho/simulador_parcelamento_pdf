@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:simulador_parcelamento_pdf/src/pages/home_page.dart';
+import 'package:simulador_parcelamento_pdf/src/frontend/pages/home_page.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -45,6 +45,7 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   Widget build(BuildContext context) {
+    String logo = 'logo';
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
@@ -61,11 +62,13 @@ class _SplashScreenState extends State<SplashScreen>
           },
           child: SizedBox(
             height: 100,
-            child: Image.asset('assets/images/logo-escritorio-min.png'),
+            child: Hero(
+              tag: logo,
+              child: Image.asset('assets/images/logo-escritorio-min.png'),
+            ),
           ),
         ),
       ),
     );
-    ;
   }
 }

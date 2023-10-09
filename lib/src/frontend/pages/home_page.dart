@@ -68,7 +68,9 @@ class _HomePageState extends State<HomePage> {
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (context) => ResultPage(
-                                valorInserido: double.parse(valorInserido!),
+                                valorInserido: double.parse(
+                                  valorInserido!.replaceAll(',', '.'),
+                                ),
                               ),
                             ),
                           );

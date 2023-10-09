@@ -50,7 +50,7 @@ class _PdfGeneratePageState extends State<PdfGeneratePage> {
     return Scaffold(
       appBar: AppBar(title: Text('PDF')),
       body: PdfPreview(
-        maxPageWidth: 700,
+        maxPageWidth: MediaQuery.of(context).size.width * 0.70,
         build: (PdfPageFormat format) async {
           return await _generatePdf(format);
         },

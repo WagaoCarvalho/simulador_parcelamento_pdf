@@ -16,7 +16,7 @@ class ResultPage extends StatefulWidget {
 
 class _ResultPageState extends State<ResultPage> {
   List<Map<String, dynamic>> gridData = [];
-  double taxaRetorno = 1.0;
+  double taxaRetorno = 2.1;
 
   @override
   void initState() {

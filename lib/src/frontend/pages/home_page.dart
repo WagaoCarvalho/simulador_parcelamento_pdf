@@ -52,6 +52,7 @@ class _HomePageState extends State<HomePage> {
                   SizedBox(
                     width: 200,
                     child: TextFormField(
+                      autofocus: true,
                       controller: controller,
                       keyboardType: TextInputType.number,
                       decoration: const InputDecoration(

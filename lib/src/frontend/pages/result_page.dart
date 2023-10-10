@@ -46,10 +46,10 @@ class _ResultPageState extends State<ResultPage> {
                   value: taxaRetorno,
                   icon: const Icon(Icons.arrow_downward),
                   elevation: 16,
-                  style: const TextStyle(color: Colors.deepPurple),
+                  style: const TextStyle(color: Colors.blue),
                   underline: Container(
                     height: 2,
-                    color: Colors.deepPurpleAccent,
+                    color: Colors.blue,
                   ),
                   onChanged: (double? value) {
                     setState(() {

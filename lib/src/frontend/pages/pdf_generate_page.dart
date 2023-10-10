@@ -108,7 +108,7 @@ class _PdfGeneratePageState extends State<PdfGeneratePage> {
                         ? pw.Image(
                             pw.MemoryImage(_logoBytes!),
                           )
-                        : pw.PdfLogo(),
+                        : pw.CircularProgressIndicator(value: 20),
                   ),
                 ],
               ),
@@ -147,7 +147,7 @@ class _PdfGeneratePageState extends State<PdfGeneratePage> {
                     child: pw.Text(
                       widget.totalValue,
                       style: pw.TextStyle(
-                        color: baseColor,
+                        color: PdfColors.red,
                         fontWeight: pw.FontWeight.bold,
                         fontSize: 12,
                       ),
